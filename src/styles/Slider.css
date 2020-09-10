@@ -1,16 +1,41 @@
 .slider-item {
-  position: relative;
-  overflow: hidden;
-  height: 280px;
+  height: 400px;
   padding: 0 10px;
   background: white;
+  text-align: center;
+}
+
+.img-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  height: 350px;
+  padding: 0 10px;
+  background: white;
+
 }
 
 .slider-item img {
   display: block;
   position: absolute;
-  width: 500px;
+  width: 450px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.slider-item h2 {
+  font-size: 20px;
+}
+
+/* the slides */
+.slick-slide {
+  overflow: hidden;
+  margin: 0 5px;
+}
+/* the parent */
+.slick-list {
+  margin: 0 -5px;
+  overflow: hidden;
+  height: 500px;
 }

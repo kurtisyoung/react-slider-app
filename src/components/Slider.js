@@ -10,18 +10,21 @@ export default class Slider extends Component {
     this.state = {
       error: null,
       isLoaded: false,
-      items: []
+      items: [],
+      copyright: null
     };
   }
 
   componentDidMount() {
-    fetch("https://dog.ceo/api/breeds/image/random/20")
+    console.log(process.env.REACT_APP_API_KEY)
+    fetch(`https://gateway.marvel.com:443/v1/public/characters?apikey=${process.env.REACT_APP_API_KEY}`)
       .then(res => res.json())
       .then(result => {
           console.log(result)
           this.setState({
             isLoaded: true,
-            items: result.message
+            items: result.data.results,
+            copyright: result.attributionText
           });
         },
         error => {
@@ -34,7 +37,7 @@ export default class Slider extends Component {
   }
 
   render() {
-    const { error, isLoaded, items } = this.state;
+    const { error, isLoaded, items, copyright } = this.state;
     const settings = {
       dots: false,
       infinite: true,
@@ -42,20 +45,17 @@ export default class Slider extends Component {
       slidesToShow: 6,
       slidesToScroll: 1,
       arrows: true,
-      centerMode: true,
-      centerPadding: '60px',
-      className: 'center',
       responsive: [
         {
           breakpoint: 1290,
           settings: {
-            slidesToShow: 6
+            slidesToShow: 5
           }
         },
         {
           breakpoint: 1024,
           settings: {
-            slidesToShow: 5
+            slidesToShow: 4
           }
         },
         {
@@ -74,15 +74,21 @@ export default class Slider extends Component {
       return <div>Loading...</div>;
     } else {
       return (
-        <SlickSlider {...settings}>
-          {
-            items.map(item => (
-              <div key={item} className="slider-item">
-                <img src={item} alt=""/>
-              </div>
-            ))
-          }
-        </SlickSlider>
+        <div>
+          <SlickSlider {...settings}>
+            {
+              items.map(item => (
+                <div key={item} className="slider-item">
+                  <div className="img-wrapper">
+                    <img src={`${item.thumbnail.path}.${item.thumbnail.extension}`} alt={item.name}/>
+                  </div>
+                  <h2>{item.name}</h2>
+                </div>
+              ))
+            }
+          </SlickSlider>
+          <p>{copyright}</p>
+        </div>
       );
     }
   }
