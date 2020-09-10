@@ -16,11 +16,9 @@ export default class Slider extends Component {
   }
 
   componentDidMount() {
-    console.log(process.env.REACT_APP_API_KEY)
     fetch(`https://gateway.marvel.com:443/v1/public/characters?orderBy=-modified&limit=30&apikey=${process.env.REACT_APP_API_KEY}`)
       .then(res => res.json())
       .then(result => {
-          console.log(result)
           this.setState({
             isLoaded: true,
             items: result.data.results,
