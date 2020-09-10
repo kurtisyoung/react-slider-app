@@ -17,7 +17,7 @@ export default class Slider extends Component {
 
   componentDidMount() {
     console.log(process.env.REACT_APP_API_KEY)
-    fetch(`https://gateway.marvel.com:443/v1/public/characters?apikey=${process.env.REACT_APP_API_KEY}`)
+    fetch(`https://gateway.marvel.com:443/v1/public/characters?orderBy=-modified&limit=30&apikey=${process.env.REACT_APP_API_KEY}`)
       .then(res => res.json())
       .then(result => {
           console.log(result)
@@ -43,7 +43,7 @@ export default class Slider extends Component {
       infinite: true,
       speed: 500,
       slidesToShow: 6,
-      slidesToScroll: 1,
+      slidesToScroll: 2,
       arrows: true,
       responsive: [
         {
@@ -71,20 +71,29 @@ export default class Slider extends Component {
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
-      return <div>Loading...</div>;
+      return (
+        <div className="loading">
+          <img src="./assets/spider-man.gif" alt="Loading..."/>
+          <h2>Loading...</h2>
+        </div>
+      )
     } else {
       return (
         <div>
           <SlickSlider {...settings}>
             {
-              items.map(item => (
-                <div key={item} className="slider-item">
-                  <div className="img-wrapper">
-                    <img src={`${item.thumbnail.path}.${item.thumbnail.extension}`} alt={item.name}/>
-                  </div>
-                  <h2>{item.name}</h2>
-                </div>
-              ))
+              items.map(item => {
+                if(!item.thumbnail.path.includes('image_not_available')) {
+                  return (
+                    <div key={item.name} className="slider-item">
+                      <div className="img-wrapper">
+                        <img src={`${item.thumbnail.path}.${item.thumbnail.extension}`} alt={item.name}/>
+                      </div>
+                      <h2>{item.name}</h2>
+                    </div>
+                  )
+                }
+              })
             }
           </SlickSlider>
           <p>{copyright}</p>
