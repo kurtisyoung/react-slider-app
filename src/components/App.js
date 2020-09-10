@@ -1,11 +1,11 @@
 import React from 'react';
-import ArcTeryxSlider from './Slider'
+import Slider from './Slider'
 import '../styles/App.css';
 
 function App() {
   return (
     <div className="App">
-      <ArcTeryxSlider/>
+      <Slider/>
     </div>
   );
 }
