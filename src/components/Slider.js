@@ -1,38 +1,35 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import SlickSlider from 'react-slick';
+import { fetchAPI } from '../api/marvel';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import "../styles/Slider.css";
 
 export default class Slider extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      error: null,
-      isLoaded: false,
-      items: [],
-      copyright: null
-    };
-  }
+  state = {
+    error: null,
+    isLoaded: false,
+    items: [],
+    copyright: null
+  };
 
   componentDidMount() {
-    fetch(`https://gateway.marvel.com:443/v1/public/characters?orderBy=-modified&limit=30&apikey=${process.env.REACT_APP_API_KEY}`)
+    fetchAPI()
       .then(res => res.json())
       .then(result => {
-        console.log(result)
-          this.setState({
-            isLoaded: true,
-            items: result.data.results,
-            copyright: result.attributionHTML
-          });
-        },
-        error => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      )
+        this.setState({
+          isLoaded: true,
+          items: result.data.results,
+          copyright: result.attributionHTML
+        });
+      },
+      error => {
+        this.setState({
+          isLoaded: true,
+          error
+        });
+      }
+    )
   }
 
   render() {
@@ -79,12 +76,12 @@ export default class Slider extends Component {
     } else {
       return (
         <div>
-          <SlickSlider {...settings}>
+          <SlickSlider {...settings} data-testid="slickSlider">
             {
-              items.map(item => {
+              items.map((item, index) => {
                 if(!item.thumbnail.path.includes('image_not_available')) {
                   return (
-                    <div key={item.name} className="slider-item">
+                    <div key={item.name} className="slider-item" data-testid={`slider-${index}`}>
                       <div className="img-wrapper">
                         <img src={`${item.thumbnail.path}.${item.thumbnail.extension}`} alt={item.name}/>
                       </div>

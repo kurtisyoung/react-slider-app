@@ -3,6 +3,9 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom/extend-expect';
+import MutationObserver from '@sheerun/mutationobserver-shim'
+
+window.MutationObserver = MutationObserver
 
 window.matchMedia = window.matchMedia || function() {
   return {
