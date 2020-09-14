@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import * as API from '../api/marvel';
 import Slider from '../components/Slider';
 
@@ -38,9 +39,9 @@ const mockData = {
       }
     }
   ]
-}
+};
 
-test('Renders loading message and then displays one image', () => {
+test('Renders loading message and then displays one image', async () => {
   mockAPI.mockImplementationOnce(() => {
     return Promise.resolve({
       json: () => {
@@ -50,57 +51,63 @@ test('Renders loading message and then displays one image', () => {
           }
         }
       }
-    })
+    });
   });
 
   render(<Slider/>);
   expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
 
-  waitFor(() => {
+  await waitFor(() => {
     // Slick makes a duplicate slide item so we mulitply the array length by 2
-    expect(document.querySelector('img').toBe(mockData.oneResult.length * 2));
+    expect(document.querySelectorAll('img').length).toBe(mockData.oneResult.length * 2);
   });
 });
 
-test('Renders loading message and then displays multiple images', () => {
+test('Renders loading message and then displays multiple images', async () => {
   mockAPI.mockImplementationOnce(() => {
     return Promise.resolve({
-      json: () => {
-        return {
-          data: {
-            results: mockData.multipleResults
-          }
-        }
-      }
-    })
+      json: () => ({ data: { results: mockData.multipleResults } })
+    });
   });
 
   render(<Slider/>);
   expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
 
-  waitFor(() => {
+  await waitFor(() => {
     // Slick makes a duplicate slide item so we mulitply the array length by 2
-    expect(document.querySelector('img').toBe(mockData.multipleResults.length * 2));
+    expect(document.querySelectorAll('img').length).toBe(mockData.multipleResults.length * 2);
   });
 });
 
-test('Renders loading message and an empty slider', () => {
+test('Renders loading message and an empty slider', async () => {
   mockAPI.mockImplementationOnce(() => {
     return Promise.resolve({
-      json: () => {
-        return {
-          data: {
-            results: mockData.empty
-          }
-        }
-      }
-    })
+      json: () => ({ data: { results: mockData.empty } })
+    });
   });
 
   render(<Slider/>);
   expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
 
-  waitFor(() => {
-    expect(document.querySelector('img').toBe(0));
-  })
+  await waitFor(() => {
+    expect(document.querySelectorAll('img').length).toBe(0);
+  });
+});
+
+
+test('Renders loading message, displays multiple image and then fire click event on next arrow', async () => {
+  mockAPI.mockImplementationOnce(() => {
+    return Promise.resolve({
+      json: () => ({data: { results: mockData.multipleResults }})
+    });
+  });
+
+  render(<Slider/>);
+  expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
+
+  await waitFor(() => {
+    // TODO Figure out how to render the Next arrow in the test
+    userEvent.click(screen.getByText('Next'));
+    expect(window.getComputedStyle(document.querySelector('.slick-track').transform)).toBe('translate3d(translate3d(-3020px, 0px, 0px))');
+  });
 });
