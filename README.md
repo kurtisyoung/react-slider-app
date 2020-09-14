@@ -1,4 +1,4 @@
-#React Marvel Slider App
+# React Marvel Slider App
 
 Visit the site here [https://kurtisyoung.github.io/react-slider-app/](https://kurtisyoung.github.io/react-slider-app/)
 
