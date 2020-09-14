@@ -1,6 +1,8 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+#React Marvel Slider App
 
 Visit the site here [https://kurtisyoung.github.io/react-slider-app/](https://kurtisyoung.github.io/react-slider-app/)
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Marvel API Key
 
