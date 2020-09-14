@@ -1,5 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Visit the site here [https://kurtisyoung.github.io/react-slider-app/](https://kurtisyoung.github.io/react-slider-app/)
+
 ## Marvel API Key
 
 This app uses the Marvel API. Generate a new public key [here](https://developer.marvel.com/). Place it in the `.env` file and name the env variable `REACT_APP_API_KEY`.
